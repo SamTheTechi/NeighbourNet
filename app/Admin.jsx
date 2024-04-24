@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,27 +11,48 @@ import {
   View,
 } from 'react-native';
 import { FIREBASE_DB } from '../firebase.config';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
 
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 const Card = ({ item }) => {
+  const handleRemoveIssue = () => {
+    RemoveIssue(item.id);
+  };
+
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.disc}>{item.disc}</Text>
-      <Text style={styles.time}>Raised at {item.disc}</Text>
+      <Text style={styles.time}>Complaint Time: {item.time}</Text>
+      <View style={styles.issues}>
+        <TouchableOpacity style={styles.touchable} onPress={handleRemoveIssue}>
+          <Text style={styles.touchabletextA}>Already resolved</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.touchable}>
+          <Text style={styles.touchabletextB}> On to it </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
-const HomeScreen = () => {
+const RemoveIssue = async (issueId) => {
+  try {
+    await deleteDoc(doc(FIREBASE_DB, 'issue', issueId));
+    alert('Issue successfully removed');
+  } catch (error) {
+    console.error(`Error removing issue with ID ${issueId}:`, error);
+  }
+};
+
+const Issues = () => {
   const [allIssues, setAllIssues] = useState([]);
 
   useEffect(() => {
     const dataRef = collection(FIREBASE_DB, 'issue');
 
-    const foo = onSnapshot(dataRef, {
+    onSnapshot(dataRef, {
       next: (snapshot) => {
         const arr = [];
         snapshot.docs.forEach((item) => {
@@ -47,15 +68,19 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={allIssues}
-        renderItem={({ item }) => <Card item={item} />}
-      />
+      {allIssues.length !== 0 ? (
+        <FlatList
+          data={allIssues}
+          renderItem={({ item }) => <Card item={item} />}
+        />
+      ) : (
+        <Text style={styles.nothing}>You're All Set!</Text>
+      )}
     </SafeAreaView>
   );
 };
 
-const sendIssue = () => {
+const Community = () => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
       <View style={styles.inputContainer}>
@@ -83,10 +108,10 @@ const sendIssue = () => {
 
 export default Admin = () => {
   return (
-    <Drawer.Navigator initialRouteName='Client'>
-      <Drawer.Screen name='Client' component={HomeScreen} />
-      <Drawer.Screen name='Raise Issue' component={sendIssue} />
-    </Drawer.Navigator>
+    <Tab.Navigator initialRouteName='issues'>
+      <Tab.Screen name='issues' component={Issues} />
+      <Tab.Screen name='community' component={Community} />
+    </Tab.Navigator>
   );
 };
 
@@ -104,18 +129,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
   },
   title: {
-    paddingBottom: 5,
+    paddingBottom: 7,
     fontSize: 25,
   },
   disc: {
     color: '#000000',
     fontSize: 15,
+    padding: 2,
   },
   time: {
-    textAlign: 'right',
     color: 'gray',
     fontSize: 15,
-    paddingTop: 5,
+    padding: 5,
   },
   inputContainer: {
     width: '80%',
@@ -155,9 +180,34 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
   },
+  issues: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  touchable: {
+    padding: 5,
+  },
+  touchabletextA: {
+    fontSize: 18,
+    paddingHorizontal: 10,
+    padding: 4,
+    borderRadius: 30,
+    backgroundColor: 'red',
+  },
+  touchabletextB: {
+    fontSize: 18,
+    paddingHorizontal: 30,
+    padding: 4,
+    borderRadius: 30,
+    backgroundColor: 'red',
+  },
   buttonOutlineText: {
     color: '#0782F9',
     fontWeight: '700',
     fontSize: 16,
+  },
+  nothing: {
+    fontSize: 30,
+    color: 'gray',
   },
 });
