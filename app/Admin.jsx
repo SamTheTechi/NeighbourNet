@@ -11,12 +11,23 @@ import {
   View,
 } from 'react-native';
 import { FIREBASE_DB } from '../firebase.config';
-import { collection, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
+import {
+  collection,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  addDoc,
+} from 'firebase/firestore';
 
 const Tab = createBottomTabNavigator();
 
 const Card = ({ item }) => {
   const handleRemoveIssue = () => {
+    RemoveIssue(item.id);
+    alert('Issue successfully removed');
+  };
+  const handlResolvingIssue = () => {
+    resolve(item.title);
     RemoveIssue(item.id);
   };
 
@@ -29,7 +40,9 @@ const Card = ({ item }) => {
         <TouchableOpacity style={styles.touchable} onPress={handleRemoveIssue}>
           <Text style={styles.touchabletextA}>Already resolved</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchable}>
+        <TouchableOpacity
+          style={styles.touchable}
+          onPress={handlResolvingIssue}>
           <Text style={styles.touchabletextB}> On to it </Text>
         </TouchableOpacity>
       </View>
@@ -40,14 +53,30 @@ const Card = ({ item }) => {
 const RemoveIssue = async (issueId) => {
   try {
     await deleteDoc(doc(FIREBASE_DB, 'issue', issueId));
-    alert('Issue successfully removed');
   } catch (error) {
     console.error(`Error removing issue with ID ${issueId}:`, error);
   }
 };
 
+const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+
+const resolve = async (title) => {
+  try {
+    await addDoc(collection(FIREBASE_DB, 'resolve'), {
+      title: title,
+      status: 'Resolved',
+      time: utc,
+    });
+    console.log('Issue resolve successfully!');
+  } catch (error) {
+    console.error('Error resolve issue:', error);
+  }
+};
+
 const Issues = () => {
+  // const [visible, setVisible] = useState(true);
   const [allIssues, setAllIssues] = useState([]);
+  // const [disc, setDisc] = useState(``);
 
   useEffect(() => {
     const dataRef = collection(FIREBASE_DB, 'issue');

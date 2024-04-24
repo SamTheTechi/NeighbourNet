@@ -71,12 +71,15 @@ const sendIssue = () => {
   const [title, setTitle] = useState(``);
   const [disc, setDisc] = useState(``);
 
+  const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+
   const raise = async () => {
     try {
       await addDoc(collection(FIREBASE_DB, 'issue'), {
         title: title,
         disc: disc,
-        time: currentTime.toLocaleTimeString('en-US'),
+        time: utc,
+        status: `Unresolved`,
       });
       console.log('Issue raised successfully!');
     } catch (error) {

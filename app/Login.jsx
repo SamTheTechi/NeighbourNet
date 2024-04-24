@@ -19,25 +19,34 @@ const Login = () => {
   const [load, setLoad] = useState(false);
 
   const navigation = useNavigation();
+
+  const [page, setPage] = useState({
+    from: 'client',
+    to: 'Admin',
+  });
+
   const handleLogin = async () => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      navigation.replace('client');
+      navigation.replace(page.from);
     } catch (e) {
       alert(`invalid cradential`);
     }
   };
 
-  const admin = () => {
-    navigation.replace('admin');
+  const handletoggle = () => {
+    if (page.to === 'Admin') {
+      setPage({
+        from: 'admin',
+        to: 'Client',
+      });
+    } else {
+      setPage({
+        from: 'client',
+        to: 'Admin',
+      });
+    }
   };
-
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //     }
-  //   });
-  // });
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
@@ -63,8 +72,18 @@ const Login = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button style={styles.button} title='Login' onPress={handleLogin} />
-        <Button style={styles.button} title='Admin' onPress={admin} />
+        <TouchableOpacity
+          style={styles.button}
+          title='Login'
+          onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.next}
+          title='Admin'
+          onPress={handletoggle}>
+          <Text style={styles.nextBtn}>Login as {page.to}</Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
@@ -136,6 +155,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+  },
+  next: {
+    padding: 5,
+  },
+  nextBtn: {
+    fontSize: 15,
+    color: '#419dff',
   },
   buttonOutlineText: {
     color: '#0782F9',
