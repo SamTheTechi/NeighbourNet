@@ -28,6 +28,10 @@ const Login = () => {
     }
   };
 
+  const admin = () => {
+    navigation.replace('admin');
+  };
+
   // useEffect(() => {
   //   auth.onAuthStateChanged((user) => {
   //     if (user) {
@@ -59,10 +63,8 @@ const Login = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
-          style={styles.button}
-          title='Login'
-          onPress={handleLogin}></Button>
+        <Button style={styles.button} title='Login' onPress={handleLogin} />
+        <Button style={styles.button} title='Admin' onPress={admin} />
       </View>
     </KeyboardAvoidingView>
   );

@@ -10,56 +10,47 @@ import {
   Text,
   View,
 } from 'react-native';
+import { FIREBASE_DB } from '../firebase.config';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 const Drawer = createDrawerNavigator();
-
-const Data = [
-  {
-    title: `Electricity`,
-    time: `2`,
-    disc: `Blackout at 2nd floor since 1AM`,
-  },
-  {
-    title: `Water`,
-    time: `6`,
-    disc: `No supply since yesterday`,
-  },
-  {
-    title: `Gas`,
-    time: `11`,
-    disc: `Gas pipeline leaking nearby weste gate`,
-  },
-  {
-    title: `Ceiling`,
-    time: `3`,
-    disc: `Noo maintainance at room 26, Ceiling cracked since March 2024`,
-  },
-  {
-    title: `Septic tank`,
-    time: `13`,
-    disc: `Septic tank overflowing, Needs cleaning`,
-  },
-  {
-    title: `Electricity`,
-    time: `4`,
-    disc: `Low voltage since yesterday's thunderstorm`,
-  },
-];
 
 const Card = ({ item }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.disc}>- {item.disc}</Text>
-      <Text style={styles.time}>Estd : {item.time} Hours</Text>
+      <Text style={styles.disc}>{item.disc}</Text>
+      <Text style={styles.time}>Raised at {item.disc}</Text>
     </View>
   );
 };
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+  const [allIssues, setAllIssues] = useState([]);
+
+  useEffect(() => {
+    const dataRef = collection(FIREBASE_DB, 'issue');
+
+    const foo = onSnapshot(dataRef, {
+      next: (snapshot) => {
+        const arr = [];
+        snapshot.docs.forEach((item) => {
+          arr.push({
+            id: item.id,
+            ...item.data(),
+          });
+        });
+        setAllIssues(arr);
+      },
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList data={Data} renderItem={({ item }) => <Card item={item} />} />
+      <FlatList
+        data={allIssues}
+        renderItem={({ item }) => <Card item={item} />}
+      />
     </SafeAreaView>
   );
 };

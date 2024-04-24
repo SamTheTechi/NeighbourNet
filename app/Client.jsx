@@ -76,6 +76,7 @@ const sendIssue = () => {
       await addDoc(collection(FIREBASE_DB, 'issue'), {
         title: title,
         disc: disc,
+        time: currentTime.toLocaleTimeString('en-US'),
       });
       console.log('Issue raised successfully!');
     } catch (error) {
