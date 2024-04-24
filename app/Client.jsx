@@ -98,7 +98,7 @@ const sendIssue = () => {
         <TextInput
           placeholder='Description'
           onChangeText={(text) => setDisc(text)}
-          style={styles.input}
+          style={styles.input2}
         />
       </View>
 
@@ -111,11 +111,22 @@ const sendIssue = () => {
   );
 };
 
+const Creaters = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.welcome}>Sameer Gupta</Text>
+      <Text style={styles.welcome}>Hasan Dilshad</Text>
+      <Text style={styles.welcome}>Shuatiksaham</Text>
+    </View>
+  );
+};
+
 export default Client = () => {
   return (
     <Drawer.Navigator initialRouteName='Client'>
       <Drawer.Screen name='Client' component={HomeScreen} />
       <Drawer.Screen name='Raise Issue' component={sendIssue} />
+      <Drawer.Screen name='Contri' component={Creaters} />
     </Drawer.Navigator>
   );
 };
@@ -149,6 +160,13 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '80%',
+  },
+  input2: {
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    borderRadius: 10,
+    marginTop: 15,
   },
   input: {
     backgroundColor: 'white',
