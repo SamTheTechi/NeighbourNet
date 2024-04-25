@@ -31,12 +31,6 @@
         "projectId": "af74cc8a-a72e-4710-bd08-bedf7d94c6b3"
       }
     },
-    "plugins": [
-      "expo-router",
-      "expo-font",
-      {
-        "fonts": ["./assets/fonts/kingsmen.ttf"]
-      }
-    ]
+    "plugins": ["expo-router"]
   }
 }
