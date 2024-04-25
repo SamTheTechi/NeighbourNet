@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
   welcome: {
     margin: 10,
     left: 10,
+    fontFamily: `Times`,
     fontSize: 30,
   },
   sam: {
