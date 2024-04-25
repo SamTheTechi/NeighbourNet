@@ -104,10 +104,13 @@ const sendIssue = () => {
 
 const Creaters = () => {
   return (
-    <View style={styles.container}>
+    <View style={styles.contri}>
       <Text style={styles.welcome}>Sameer Gupta</Text>
-      <Text style={styles.welcome}>Hasan Dilshad</Text>
-      <Text style={styles.welcome}>Shuatiksaham</Text>
+      <Text style={styles.sam}>- First year B.Tech CSE Student From UCER </Text>
+      <Text style={styles.welcome}>Hasan Dilshad Husain</Text>
+      <Text style={styles.sam}>- First year B.Tech CSE Student From IERT</Text>
+      <Text style={styles.welcome}>Sutikshan Ram</Text>
+      <Text style={styles.sam}>- First year B.Tech CSE Student From IERT</Text>
     </View>
   );
 };
@@ -190,8 +193,15 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   welcome: {
-    marginBottom: 20,
-    fontSize: 42,
+    margin: 10,
+    left: 10,
+    fontSize: 30,
+  },
+  sam: {
+    color: 'gray',
+    marginBottom: 50,
+    fontSize: 16,
+    left: 30,
   },
   button: {
     backgroundColor: '#419dff',
