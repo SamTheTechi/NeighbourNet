@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   welcome: {
+    fontFamily: 'kingsmen',
     marginBottom: 20,
     fontSize: 42,
   },

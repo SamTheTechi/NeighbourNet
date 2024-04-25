@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-
 import Login from './Login';
 import Client from './Client';
 import Admin from './Admin';
@@ -11,7 +10,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer independent={true}>
-      <Stack.Navigator initialRouteName='client'>
+      <Stack.Navigator initialRouteName='login'>
         <Stack.Screen
           name='login'
           component={Login}

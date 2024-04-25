@@ -21,7 +21,7 @@ const Card = ({ item }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.disc}>{item.status}</Text>
+      <Text style={styles.disc}>Status: {item.status}</Text>
       <Text style={styles.time}>Resolve Time: {item.time}</Text>
     </View>
   );
@@ -70,7 +70,9 @@ const sendIssue = () => {
         time: utc,
         status: `Unresolved`,
       });
-      console.log('Issue raised successfully!');
+      setTitle(``);
+      setDisc(``);
+      alert(`issue raised`);
     } catch (error) {
       console.error('Error raising issue:', error);
     }
@@ -113,7 +115,7 @@ const Creaters = () => {
 export default Client = () => {
   return (
     <Drawer.Navigator
-      initialRouteName='AI chat'
+      initialRouteName='Client'
       drawerStyle={{
         backgroundColor: '#fff',
         width: 240,
@@ -126,7 +128,7 @@ export default Client = () => {
       }}>
       <Drawer.Screen name='Client' component={HomeScreen} />
       <Drawer.Screen name='Raise Issue' component={sendIssue} />
-      <Drawer.Screen name='AI chat' component={GenerativeChat} />
+      {/* <Drawer.Screen name='AI chat' component={GenerativeChat} /> */}
       <Drawer.Screen name='Contributors' component={Creaters} />
     </Drawer.Navigator>
   );
@@ -143,22 +145,24 @@ const styles = StyleSheet.create({
   },
   card: {
     margin: 10,
-    padding: 10,
-    paddingLeft: 20,
-    borderRadius: 20,
+    padding: 20,
+    paddingHorizontal: 50,
+    borderRadius: 10,
     backgroundColor: 'lightgray',
   },
   title: {
+    textAlign: 'center',
     paddingBottom: 5,
     fontSize: 25,
   },
   disc: {
+    textAlign: 'center',
     color: '#000000',
     fontSize: 15,
   },
   time: {
     textAlign: 'right',
-    color: 'gray',
+    color: '#717572',
     fontSize: 15,
     paddingTop: 5,
   },

@@ -128,7 +128,7 @@ const Community = () => {
 export default Admin = () => {
   return (
     <Tab.Navigator
-      initialRouteName='issues'
+      initialRouteName='Issues'
       tabBarOptions={{
         activeTintColor: 'blue',
         inactiveTintColor: 'gray',
@@ -136,8 +136,8 @@ export default Admin = () => {
           fontSize: 20,
         },
       }}>
-      <Tab.Screen name='issues' component={Issues} />
-      <Tab.Screen name='community' component={Community} />
+      <Tab.Screen name='Issues' component={Issues} />
+      <Tab.Screen name='Community' component={Community} />
     </Tab.Navigator>
   );
 };
@@ -149,25 +149,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
-    margin: 10,
+    marginTop: 10,
+    margin: 5,
     padding: 10,
-    paddingLeft: 20,
-    borderRadius: 20,
+    paddingLeft: 10,
+    borderRadius: 6,
     backgroundColor: 'lightgray',
   },
   title: {
     paddingBottom: 7,
-    fontSize: 25,
+    textAlign: 'center',
+    fontSize: 26,
   },
   disc: {
-    color: '#000000',
+    color: '#717572',
     fontSize: 15,
     padding: 2,
+    margin: 5,
   },
   time: {
-    color: 'gray',
+    textAlign: `center`,
+    color: 'black',
     fontSize: 15,
-    padding: 5,
+    margin: 5,
   },
   inputContainer: {
     width: '80%',
@@ -229,15 +233,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 10,
     padding: 4,
-    borderRadius: 30,
-    backgroundColor: 'red',
+    borderRadius: 10,
+    backgroundColor: '#55cf65',
   },
   touchabletextB: {
     fontSize: 18,
     paddingHorizontal: 30,
     padding: 4,
-    borderRadius: 30,
-    backgroundColor: 'red',
+    borderRadius: 10,
+    backgroundColor: '#cf557f',
   },
   buttonOutlineText: {
     color: '#0782F9',
