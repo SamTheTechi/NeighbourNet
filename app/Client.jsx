@@ -12,57 +12,46 @@ import {
   View,
 } from 'react-native';
 import 'firebase/compat/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot } from 'firebase/firestore';
+import GenerativeChat from './chat';
 
 const Drawer = createDrawerNavigator();
-
-const Data = [
-  {
-    title: `Electricity`,
-    time: `2`,
-    disc: `Blackout at 2nd floor since 1AM`,
-  },
-  {
-    title: `Water`,
-    time: `6`,
-    disc: `No supply since yesterday`,
-  },
-  {
-    title: `Gas`,
-    time: `11`,
-    disc: `Gas pipeline leaking nearby weste gate`,
-  },
-  {
-    title: `Ceiling`,
-    time: `3`,
-    disc: `Noo maintainance at room 26, Ceiling cracked since March 2024`,
-  },
-  {
-    title: `Septic tank`,
-    time: `13`,
-    disc: `Septic tank overflowing, Needs cleaning`,
-  },
-  {
-    title: `Electricity`,
-    time: `4`,
-    disc: `Low voltage since yesterday's thunderstorm`,
-  },
-];
 
 const Card = ({ item }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.disc}>- {item.disc}</Text>
-      <Text style={styles.time}>Estd : {item.time} Hours</Text>
+      <Text style={styles.disc}>{item.status}</Text>
+      <Text style={styles.time}>Resolve Time: {item.time}</Text>
     </View>
   );
 };
 
 const HomeScreen = () => {
+  const [allResolve, setAllResolve] = useState([]);
+
+  useEffect(() => {
+    const dataRef = collection(FIREBASE_DB, 'resolve');
+    onSnapshot(dataRef, {
+      next: (snapshot) => {
+        const arr = [];
+        snapshot.docs.forEach((item) => {
+          arr.push({
+            id: item.id,
+            ...item.data(),
+          });
+        });
+        setAllResolve(arr);
+      },
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList data={Data} renderItem={({ item }) => <Card item={item} />} />
+      <FlatList
+        data={allResolve}
+        renderItem={({ item }) => <Card item={item} />}
+      />
     </SafeAreaView>
   );
 };
@@ -123,10 +112,22 @@ const Creaters = () => {
 
 export default Client = () => {
   return (
-    <Drawer.Navigator initialRouteName='Client'>
+    <Drawer.Navigator
+      initialRouteName='AI chat'
+      drawerStyle={{
+        backgroundColor: '#fff',
+        width: 240,
+      }}
+      drawerContentOptions={{
+        activeTintColor: 'blue',
+        inactiveTintColor: 'black',
+        itemStyle: { marginVertical: 5 },
+        labelStyle: { fontSize: 16 },
+      }}>
       <Drawer.Screen name='Client' component={HomeScreen} />
       <Drawer.Screen name='Raise Issue' component={sendIssue} />
-      <Drawer.Screen name='Contri' component={Creaters} />
+      <Drawer.Screen name='AI chat' component={GenerativeChat} />
+      <Drawer.Screen name='Contributors' component={Creaters} />
     </Drawer.Navigator>
   );
 };
@@ -136,6 +137,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  main: {
+    backgroundColor: 'black',
   },
   card: {
     margin: 10,

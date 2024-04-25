@@ -58,9 +58,8 @@ const RemoveIssue = async (issueId) => {
   }
 };
 
-const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
-
 const resolve = async (title) => {
+  const utc = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
   try {
     await addDoc(collection(FIREBASE_DB, 'resolve'), {
       title: title,
@@ -74,13 +73,10 @@ const resolve = async (title) => {
 };
 
 const Issues = () => {
-  // const [visible, setVisible] = useState(true);
   const [allIssues, setAllIssues] = useState([]);
-  // const [disc, setDisc] = useState(``);
 
   useEffect(() => {
     const dataRef = collection(FIREBASE_DB, 'issue');
-
     onSnapshot(dataRef, {
       next: (snapshot) => {
         const arr = [];
@@ -110,22 +106,16 @@ const Issues = () => {
 };
 
 const Community = () => {
+  const [msg, setMsg] = useState(``);
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder='Title'
-          onChangeText={(text) => setEmail(text)}
-          style={styles.input}
-        />
+      <View style={styles.inputContainer2}>
         <TextInput
           placeholder='Description'
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
+          onChangeText={(text) => setMsg(text)}
+          style={styles.input2}
         />
       </View>
-
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Raise Issue</Text>
@@ -137,7 +127,15 @@ const Community = () => {
 
 export default Admin = () => {
   return (
-    <Tab.Navigator initialRouteName='issues'>
+    <Tab.Navigator
+      initialRouteName='issues'
+      tabBarOptions={{
+        activeTintColor: 'blue',
+        inactiveTintColor: 'gray',
+        labelStyle: {
+          fontSize: 20,
+        },
+      }}>
       <Tab.Screen name='issues' component={Issues} />
       <Tab.Screen name='community' component={Community} />
     </Tab.Navigator>
@@ -173,6 +171,17 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '80%',
+  },
+  inputContainer2: {
+    width: '80%',
+  },
+  input2: {
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingTop: 10,
+    borderRadius: 10,
+    paddingBottom: 60,
+    marginTop: 15,
   },
   input: {
     backgroundColor: 'white',
