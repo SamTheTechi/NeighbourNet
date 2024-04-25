@@ -48,10 +48,14 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={allResolve}
-        renderItem={({ item }) => <Card item={item} />}
-      />
+      {allResolve.length !== 0 ? (
+        <FlatList
+          data={allResolve}
+          renderItem={({ item }) => <Card item={item} />}
+        />
+      ) : (
+        <Text style={styles.nothing}>"No Issue"</Text>
+      )}
     </SafeAreaView>
   );
 };
@@ -162,6 +166,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000',
     fontSize: 15,
+  },
+  nothing: {
+    fontSize: 30,
+    color: 'gray',
   },
   time: {
     textAlign: 'right',
