@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBp6UqWNI_0W1vdcOaYhO7SQciIZ52LKsU',
+  apiKey: 'Api key',
   authDomain: 'third-crossing-415107.firebaseapp.com',
   databaseURL:
     'https://third-crossing-415107-default-rtdb.asia-southeast1.firebasedatabase.app',
