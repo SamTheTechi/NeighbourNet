@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 
 const GenerativeChat = () => {
   const genAI = new GoogleGenerativeAI(
-    `AIzaSyC4so2oRJ68fKM50hwDx3n7JBVEVLQgbm4`
+    `your api key`
   );
   const [input, setInput] = useState(``);
   const [msg, setMsg] = useState(``);
